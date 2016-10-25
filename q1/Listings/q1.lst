@@ -4,71 +4,94 @@
 ARM Macro Assembler    Page 1 
 
 
-    1 00000000         ; Put your name and a title for the program here
-    2 00000000         
-    3 00000000         ;;; Directives
-    4 00000000                 PRESERVE8
-    5 00000000                 THUMB
-    6 00000000         
-    7 00000000         
-    8 00000000         ;;; Equates
+    1 00000000         ;JOSH LEIDL - 200350878
+    2 00000000         ;AS4 Q1
+    3 00000000         
+    4 00000000         ;THIS CODE USES A COPIED LAB HEADER
+    5 00000000         
+    6 00000000         ;;; Directives
+    7 00000000                 PRESERVE8
+    8 00000000                 THUMB
     9 00000000         
-   10 00000000 20001000 
+   10 00000000         
+   11 00000000         ;;; Equates
+   12 00000000         
+   13 00000000 20001000 
                        INITIAL_MSP
                                EQU              0x20001000  ; Initial Main Stac
                                                             k Pointer Value All
                                                             ocating 
-   11 00000000         ; 1000 bytes to the stack as it grows down.
-   12 00000000         
-   13 00000000         
-   14 00000000         ; Vector Table Mapped to Address 0 at Reset
-   15 00000000         ; Linker requires __Vectors to be exported
+   14 00000000         ; 1000 bytes to the stack as it grows down.
+   15 00000000         
    16 00000000         
-   17 00000000                 AREA             RESET, DATA, READONLY
-   18 00000000                 EXPORT           __Vectors
+   17 00000000         ; Vector Table Mapped to Address 0 at Reset
+   18 00000000         ; Linker requires __Vectors to be exported
    19 00000000         
-   20 00000000 20001000 
+   20 00000000                 AREA             RESET, DATA, READONLY
+   21 00000000                 EXPORT           __Vectors
+   22 00000000         
+   23 00000000 20001000 
                        __Vectors
                                DCD              INITIAL_MSP ; stack pointer val
                                                             ue when stack is em
                                                             pty
-   21 00000004 00000000        DCD              Reset_Handler ; reset vector
-   22 00000008         
-   23 00000008                 ALIGN
-   24 00000008         
-   25 00000008         ;The program
-   26 00000008         ; Linker requires Reset_Handler
+   24 00000004 00000000        DCD              Reset_Handler ; reset vector
+   25 00000008         
+   26 00000008                 ALIGN
    27 00000008         
-   28 00000008                 AREA             MYCODE, CODE, READONLY
-   29 00000000         
-   30 00000000         
-   31 00000000         
-   32 00000000                 ENTRY
-   33 00000000                 EXPORT           Reset_Handler
+   28 00000008         ;The program
+   29 00000008         ; Linker requires Reset_Handler
+   30 00000008         
+   31 00000008                 AREA             MYCODE, CODE, READONLY
+   32 00000000         
+   33 00000000         
    34 00000000         
-   35 00000000                 ALIGN
-   36 00000000         
+   35 00000000                 ENTRY
+   36 00000000                 EXPORT           Reset_Handler
    37 00000000         
-   38 00000000         Reset_Handler
-   39 00000000         PROC
+   38 00000000                 ALIGN
+   39 00000000         
    40 00000000         
-   41 00000000 F04F 0110       MOV              R1, #16
-   42 00000004         
-   43 00000004         endloop
-   44 00000004 E7FE            b                endloop
-   45 00000006         
-   46 00000006         end
-   47 00000006         
-   48 00000006         
-   49 00000006         
-   50 00000006         
-                       
+   41 00000000         Reset_Handler
+   42 00000000         PROC
+   43 00000000         
+   44 00000000 4E09            LDR              R6, =0x12345678
+   45 00000002 F04F 0C04       MOV              R12, #4
+   46 00000006         
+   47 00000006         ;DESCRIPTION: Rotating shift left
+   48 00000006         ;ARGUMENTS: R6 = toShift, R12 = shiftAmount
+   49 00000006         ;CONSTRAINTS: shiftAmount < 32
+   50 00000006         ;RETURN: R4 = shifted
+   51 00000006 F000 F801       BL               rot_left
 
 
 
 ARM Macro Assembler    Page 2 
 
 
+   52 0000000A         
+   53 0000000A         endLoop
+   54 0000000A E7FE            B                endLoop
+   55 0000000C         
+   56 0000000C         END
+   57 0000000C         
+   58 0000000C         rot_left
+   59 0000000C         ;Store R0, R1, and R2 for use
+   60 0000000C B407            PUSH             {R0, R1, R2}
+   61 0000000E         
+   62 0000000E FA06 F00C       LSL              R0, R6, R12
+   63 00000012         
+   64 00000012 F04F 0420       MOV              R4, #32
+   65 00000016 EBA4 020C       SUB              R2, R4, R12
+   66 0000001A FA26 F102       LSR              R1, R6, R2
+   67 0000001E         
+   68 0000001E EB00 0401       ADD              R4, R0, R1
+   69 00000022         
+   70 00000022 BC07            POP              {R0, R1, R2}
+   71 00000024         
+   72 00000024 4770            BX               LR
+                       
+              00 00 12345678 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\q1.d -o.\objects\q1.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Kei
 l_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\Inc\ST\STM32F10x --predefine="__EVAL SE
@@ -83,7 +106,7 @@ RESET 00000000
 
 Symbol: RESET
    Definitions
-      At line 17 in file q1.s
+      At line 20 in file q1.s
    Uses
       None
 Comment: RESET unused
@@ -91,9 +114,9 @@ __Vectors 00000000
 
 Symbol: __Vectors
    Definitions
-      At line 20 in file q1.s
+      At line 23 in file q1.s
    Uses
-      At line 18 in file q1.s
+      At line 21 in file q1.s
 Comment: __Vectors used once
 2 symbols
 
@@ -102,11 +125,19 @@ Comment: __Vectors used once
 ARM Macro Assembler    Page 1 Alphabetic symbol ordering
 Relocatable symbols
 
+END 0000000C
+
+Symbol: END
+   Definitions
+      At line 56 in file q1.s
+   Uses
+      None
+Comment: END unused
 MYCODE 00000000
 
 Symbol: MYCODE
    Definitions
-      At line 28 in file q1.s
+      At line 31 in file q1.s
    Uses
       None
 Comment: MYCODE unused
@@ -114,7 +145,7 @@ PROC 00000000
 
 Symbol: PROC
    Definitions
-      At line 39 in file q1.s
+      At line 42 in file q1.s
    Uses
       None
 Comment: PROC unused
@@ -122,28 +153,28 @@ Reset_Handler 00000000
 
 Symbol: Reset_Handler
    Definitions
-      At line 38 in file q1.s
+      At line 41 in file q1.s
    Uses
-      At line 21 in file q1.s
-      At line 33 in file q1.s
+      At line 24 in file q1.s
+      At line 36 in file q1.s
 
-end 00000006
+endLoop 0000000A
 
-Symbol: end
+Symbol: endLoop
    Definitions
-      At line 46 in file q1.s
+      At line 53 in file q1.s
    Uses
-      None
-Comment: end unused
-endloop 00000004
+      At line 54 in file q1.s
+Comment: endLoop used once
+rot_left 0000000C
 
-Symbol: endloop
+Symbol: rot_left
    Definitions
-      At line 43 in file q1.s
+      At line 58 in file q1.s
    Uses
-      At line 44 in file q1.s
-Comment: endloop used once
-5 symbols
+      At line 51 in file q1.s
+Comment: rot_left used once
+6 symbols
 
 
 
@@ -154,9 +185,9 @@ INITIAL_MSP 20001000
 
 Symbol: INITIAL_MSP
    Definitions
-      At line 10 in file q1.s
+      At line 13 in file q1.s
    Uses
-      At line 20 in file q1.s
+      At line 23 in file q1.s
 Comment: INITIAL_MSP used once
 1 symbol
-340 symbols in table
+343 symbols in table

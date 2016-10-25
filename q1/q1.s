@@ -1,4 +1,7 @@
-; Put your name and a title for the program here
+;JOSH LEIDL - 200350878
+;AS4 Q1
+
+;THIS CODE USES A COPIED LAB HEADER
 
 ;;; Directives
             PRESERVE8
@@ -38,9 +41,32 @@ __Vectors	DCD		INITIAL_MSP			; stack pointer value when stack is empty
 Reset_Handler
 PROC
 	
-	MOV R1, #16
-
-endloop
-	b endloop
+	LDR R6, =0x12345678
+	MOV R12, #4
+	
+	;DESCRIPTION: Rotating shift left
+	;ARGUMENTS: R6 = toShift, R12 = shiftAmount
+	;CONSTRAINTS: shiftAmount < 32
+	;RETURN: R4 = shifted
+	BL rot_left
+	
+endLoop
+	B endLoop
 
 END		
+	
+rot_left
+	;Store R0, R1, and R2 for use
+	PUSH {R0, R1, R2}
+	
+	LSL R0, R6, R12
+	
+	MOV R4, #32
+	SUB R2, R4, R12
+	LSR R1, R6, R2
+	
+	ADD R4, R0, R1
+	
+	POP {R0, R1, R2}
+	
+	BX LR
