@@ -1,0 +1,2 @@
+Dependencies for Project 'q2q3', Target 'Target 1': (DO NOT MODIFY !)
+F (.\q2q3.s)(0x5810184F)(--cpu Cortex-M3 --pd "__EVAL SETA 1" -g --apcs=interwork -IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\Inc\ST\STM32F10x--pd "__UVISION_VERSION SETA 521"--list .\listings\q2q3.lst --xref -o .\objects\q2q3.o --depend .\objects\q2q3.d)
