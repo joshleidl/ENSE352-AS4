@@ -70,8 +70,8 @@ ARM Macro Assembler    Page 2
 
 
    52 0000000A         
-   53 0000000A         endLoop
-   54 0000000A E7FE            B                endLoop
+   53 0000000A         loop
+   54 0000000A E7FE            B                loop
    55 0000000C         
    56 0000000C         END
    57 0000000C         
@@ -90,8 +90,9 @@ ARM Macro Assembler    Page 2
    70 00000022 BC07            POP              {R0, R1, R2}
    71 00000024         
    72 00000024 4770            BX               LR
+   73 00000026 00 00           ALIGN
                        
-              00 00 12345678 
+              12345678 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M3 --apcs=interw
 ork --depend=.\objects\q1.d -o.\objects\q1.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Kei
 l_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM\Inc\ST\STM32F10x --predefine="__EVAL SE
@@ -158,14 +159,14 @@ Symbol: Reset_Handler
       At line 24 in file q1.s
       At line 36 in file q1.s
 
-endLoop 0000000A
+loop 0000000A
 
-Symbol: endLoop
+Symbol: loop
    Definitions
       At line 53 in file q1.s
    Uses
       At line 54 in file q1.s
-Comment: endLoop used once
+Comment: loop used once
 rot_left 0000000C
 
 Symbol: rot_left

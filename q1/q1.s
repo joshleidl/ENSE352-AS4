@@ -50,8 +50,8 @@ PROC
 	;RETURN: R4 = shifted
 	BL rot_left
 	
-endLoop
-	B endLoop
+loop
+	B loop
 
 END		
 	
@@ -70,3 +70,4 @@ rot_left
 	POP {R0, R1, R2}
 	
 	BX LR
+	ALIGN
